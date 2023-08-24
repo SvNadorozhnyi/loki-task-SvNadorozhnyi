@@ -1,20 +1,21 @@
-version: '3'
-name: webapp
+version: '3.7'
 
 services:
   webapp:
-   build:
-    context: .
-    dockerfile: Dockerfile
-   container_name: webapp
-   ports:
-    - 8080:8080  
-   labels:
-     webapp: "varlogs"
-     #logging_jobname: "containerlogs"
-
-   networks:
-     -  loki
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    environment:
+      - PORT=8080
+      - COMPOSE_PROJECT_NAME=webapp
+    labels:
+      - "webapp=varlogs"
+    depends_on:
+      - loki
+    networks:
+      - loki
 
   grafana:
     image: grafana/grafana:latest
